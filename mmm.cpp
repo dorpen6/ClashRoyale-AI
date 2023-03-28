@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    // Define the 16 cards and their anti-cards
+    unordered_map<string, vector<string>> anti_cards = {
+        {"Arrows", {}},
+
+        {"Bomber", {"Arrows", "Princess"}},
+        {"BabyDragon", {"Lightning", "InfernoDragon", "Phoenix"}},
+        {"Bowler", {"Phoenix", "InfernoTower", "InfernoDragon", "Rocket"}},
+
+
+        {"Cannon", {}},
+
+        {"ElectroGiant", {"Cannon", "Musketeer", "ThreeMusketeers", "GoblinCage"}},
+
+        {"Miner", {"GoldenKnight", "Archers"}},
+        {"MinionHorde", {"Arrows", "Zap"}},
+        {"Minions", {"BabyDragon"}},
+        {"Minions", {"BabyDragon"}},
+        {"MegaKnight", {"GoblinGang", "Bats"}},
+
+
+        {"InfernoTower", {"Lightning"}},
+        {"InfernoDragon", {"Archers", "Phoenix", "Fireball", "Zap", "Skeletons", "DartGoblin"}},
+
+        {"P.E.K.K.A", {"SkeletonArmy", "MiniP.E.K.K.A", "Cannon"}},
+        {"SkeletonArmy", {"Valkyrie"}},
+        {"HogRider", {"Cannon", "Tombstone"}},
+        {"Balloon", {"Bats", "Minions", "Musketeer", "Archers", "Phoenix", "Cannon", "Lightning", "Tornado"}},
+
+        {"Golem", {"InfernoTower", "Rocket"}},
+        {"GoblinGang", {"MegaKnight", "Fireball"}},
+        {"GoblinBarrel", {"Log", "Zap", "BarbarianBarrel"}},
+        {"GoblinCage", {"Lightning", "Earthquake", "Fireball"}},
+        {"Bowler", {"Phoenix", "InfernoTower", "InfernoDragon", "Rocket"}},
+
+        {"Princess", {"Log", "BarbarianBarrel", "Tornado", "Cannon", "Arrows"}},
+        {"Log", {}},
+        {"Fireball", {"Monk"}},
+        {"Wizard", {"Fireball", "MiniP.E.K.K.A"}},
+        {"Lumberjack", {"GoldenKnight"}},
+
+
+    };
+
+    // Ask the first user to input their deck
+    vector<string> deck1;
+    cout << "First user, please input your deck (8 cards):" << endl;
+    for (int i = 1; i <= 8; i++) {
+        cout << "Card " << i << ": ";
+        string card;
+        cin >> card;
+        // Remove spaces from the card name
+        card.erase(remove(card.begin(), card.end(), ' '), card.end());
+        deck1.push_back(card);
+    }
+
+    // Ask the second user to input their deck
+    vector<string> deck2;
+    cout << "Second user, please input your deck (8 cards):" << endl;
+    for (int i = 1; i <= 8; i++) {
+        cout << "Card " << i << ": ";
+        string card;
+        cin >> card;
+        // Remove spaces from the card name
+        card.erase(remove(card.begin(), card.end(), ' '), card.end());
+        deck2.push_back(card);
+    }
+
+    // Check for defensive options for each card in user 1's deck
+    for (string card : deck1) {
+        if (anti_cards.count(card) > 0) {
+            vector<string> anti_cards_list = anti_cards[card];
+            for (string anti_card : anti_cards_list) {
+                if (find(deck2.begin(), deck2.end(), anti_card) != deck2.end()) {
+                    cout << "Be careful! " << card << " ------> " << anti_card << endl;
+                }
+            }
+        }
+    }
+    cout << "------------------------------------------------" << endl;
+    // Check for defensive options for each card in user 2's deck
+    for (string card : deck2) {
+        if (anti_cards.count(card) > 0) {
+            vector<string> anti_cards_list = anti_cards[card];
+            for (string anti_card : anti_cards_list) {
+                if (find(deck1.begin(), deck1.end(), anti_card) != deck1.end()) {
+                    cout << "you can use " << anti_card << " ------> " << card << endl;
+                }
+            }
+        }
+    }
+    // Check for duplicate cards in user 1's deck
+    for (string card : deck1) {
+        if (count(deck1.begin(), deck1.end(), card) > 1) {
+            cout << "First user, you have a duplicate card in your deck: " << card << endl;
+        }
+    }
+
+    // Check for duplicate cards in user 2's deck
+    for (string card : deck2) {
+        if (count(deck2.begin(), deck2.end(), card) > 1) {
+            cout << "Second user, you have a duplicate card in your deck: " << card << endl;
+        }
+    }
+
+
+
+    return 0;
+}
